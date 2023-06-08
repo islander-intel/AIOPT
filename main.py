@@ -4,13 +4,7 @@ import torchvision
 from torchvision import transforms
 from torchvision import datasets
 from lenet import LeNet
-from master import run
-# from collections  import UserDict
-# params = OrderedDict(
-#     lr = [.01, .001],
-#     batch_size = [64,100, 1000],
-#     shuffle = [True, False],
-# )
+from master import torch_run
 params = {
     "lr" : [.01, .001],
     "batch_size": [64,100, 1000],
@@ -34,7 +28,7 @@ test_set = datasets.FashionMNIST(
     ])
 )
 def main():
-    run(LeNet,params,train_set,epochs)
+    torch_run(LeNet,params,train_set,test_set,epochs)
 
 if __name__ == "__main__":
     main()

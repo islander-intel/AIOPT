@@ -1,15 +1,15 @@
-# put all hyper params into a OrderedDict, easily expandable
-#  import modules to build RunBuilder and RunManager helper classes
+
 from collections  import OrderedDict
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
+from build import train,test
 # import torchvision module to handle image manipulation
 torch.set_printoptions(linewidth=120)
 torch.set_grad_enabled(True) 
 from modelbuilder import ModelBuilder
 from modelcombination import ModelCombination
-def run(NNmodel,params,data,epochs):
+def torch_run(NNmodel,params,test_data,train_data,epochs):
     device = (
     "cuda"
     if torch.cuda.is_available()
@@ -31,27 +31,17 @@ def run(NNmodel,params,data,epochs):
 
         # if params changes, following line of code should reflect the changes too
         model = NNmodel()
-        loader = torch.utils.data.DataLoader(data, batch_size = run.batch_size)
-        optimizer = optim.Adam(model.parameters(), lr=run.lr)
-        m.begin_run(run, model, loader)
+        train_loader = torch.utils.data.DataLoader(train_data, batch_size = run.batch_size)
+        optimizer = optim.Adam(model.parameters(), lr=run.lr)# this part is what I want to be able to opt
+        test_loader = torch.utils.data.DataLoader(test_data,batch_size = run.batch_size)
+        m.begin_run(run, model, train_loader,test_loader)
         for epoch in range(epochs):
             m.begin_epoch()
-            for batch in loader:
-                X = batch[0].to(device)
-                y = batch[1].to(device)
-                preds = model(X)
-                loss = F.cross_entropy(preds,y)
-
-                optimizer.zero_grad()
-                loss.backward()
-                optimizer.step()
-
-                m.track_loss(loss)
-                m.track_num_correct(preds, y)
-
+            loss_fn = F.cross_entropy
+            train(train_loader,model,loss_fn,optimizer,device,m)
+            test(test_loader,model,loss_fn,device,m)
             m.end_epoch()
-            # count+=1
-            # percent = len()
+
         m.end_run()
 
     # when all runs are done, save results to files
