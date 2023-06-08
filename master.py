@@ -10,6 +10,20 @@ torch.set_grad_enabled(True)
 from modelbuilder import ModelBuilder
 from modelcombination import ModelCombination
 def run(NNmodel,params,data,epochs):
+    device = (
+    "cuda"
+    if torch.cuda.is_available()
+    else "mps"
+    if torch.backends.mps.is_available()
+    else "cpu"
+    )
+    print(f"Using {device} device")
+    # params = OrderedDict(params)
+    params = OrderedDict(
+        lr = params["lr"],
+        batch_size = params["batch_size"],
+        shuffle = params["shuffle"],
+    )
     m = ModelBuilder()
     # count = 0
     # get all runs from params using RunBuilder class
@@ -23,8 +37,8 @@ def run(NNmodel,params,data,epochs):
         for epoch in range(epochs):
             m.begin_epoch()
             for batch in loader:
-                X = batch[0]
-                y = batch[1]
+                X = batch[0].to(device)
+                y = batch[1].to(device)
                 preds = model(X)
                 loss = F.cross_entropy(preds,y)
 
