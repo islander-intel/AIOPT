@@ -3,12 +3,12 @@ from collections  import OrderedDict
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
-from build import train,test
+from .build import train,test
 # import torchvision module to handle image manipulation
 torch.set_printoptions(linewidth=120)
 torch.set_grad_enabled(True) 
-from modelbuilder import ModelBuilder
-from modelcombination import ModelCombination
+from .modelbuilder import ModelBuilder
+from .modelcombination import ModelCombination
 def torch_run(NNmodel,params,test_data,train_data,epochs):
     device = (
     "cuda"
@@ -31,6 +31,7 @@ def torch_run(NNmodel,params,test_data,train_data,epochs):
 
         # if params changes, following line of code should reflect the changes too
         model = NNmodel()
+        model.to(device)
         train_loader = torch.utils.data.DataLoader(train_data, batch_size = run.batch_size)
         optimizer = optim.Adam(model.parameters(), lr=run.lr)# this part is what I want to be able to opt
         test_loader = torch.utils.data.DataLoader(test_data,batch_size = run.batch_size)
@@ -46,3 +47,32 @@ def torch_run(NNmodel,params,test_data,train_data,epochs):
 
     # when all runs are done, save results to files
     m.save('results')
+
+if __name__=="__main__":
+    from torchvision import transforms
+    from torchvision import datasets
+    from lenet import LeNet
+    from master import torch_run
+    params = {
+        "lr" : [.01, .001],
+        "batch_size": [64,100, 1000],
+        "shuffle": [True, False],
+    }
+    epochs = 3
+    train_set = datasets.FashionMNIST(
+        root = './data/FashionMNIST',
+        train = True,
+        download = True,
+        transform = transforms.Compose([
+            transforms.ToTensor()                                 
+        ])
+    )
+    test_set = datasets.FashionMNIST(
+        root = './data/FashionMNIST',
+        train = False,
+        download = True,
+        transform = transforms.Compose([
+            transforms.ToTensor()                                 
+        ])
+    )
+    torch_run(LeNet,params,train_set,test_set,epochs)
