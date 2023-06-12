@@ -1,10 +1,9 @@
-from collections  import OrderedDict
-import torch
-import torchvision
+
 from torchvision import transforms
 from torchvision import datasets
 from lenet import LeNet
-from master import torch_run
+# from AiOpt import master
+from src.master import torch_run
 params = {
     "lr" : [.01, .001],
     "batch_size": [64,100, 1000],

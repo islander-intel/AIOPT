@@ -12,7 +12,7 @@ class LeNet(nn.Module):
 
         self.fc1 = nn.Sequential(
             nn.Linear(800,500),
-            nn.ReLU())
+            nn.SELU())
         self.fc2 = nn.Linear(in_features=500,out_features=classes)
         self.out = nn.LogSoftmax(dim=1)
         self.flatten = nn.Flatten()
