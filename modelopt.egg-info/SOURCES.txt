@@ -1,0 +1,12 @@
+README.md
+setup.py
+modelopt/__init__.py
+modelopt/build.py
+modelopt/clear_terminal.py
+modelopt/master.py
+modelopt/modelbuilder.py
+modelopt/modelcombination.py
+modelopt.egg-info/PKG-INFO
+modelopt.egg-info/SOURCES.txt
+modelopt.egg-info/dependency_links.txt
+modelopt.egg-info/top_level.txt
