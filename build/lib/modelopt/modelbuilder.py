@@ -126,7 +126,7 @@ class ModelBuilder():
     pd.DataFrame.from_dict(
         self.run_data, 
         orient = 'columns',
-    ).to_csv(f'{fileName}.csv')
+    ).to_csv(f'{fileName}.csv',index=False)
 
     with open(f'{fileName}.json', 'w', encoding='utf-8') as f:
       json.dump(self.run_data, f, ensure_ascii=False, indent=4)
