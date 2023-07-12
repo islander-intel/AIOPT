@@ -105,7 +105,7 @@ class ModelBuilder():
     # self.percent_count+=1
     # display(df)
     # print((self.percent_count/len(self.run_data)))
-    print(df.sort_values(by=["train accuracy","test accuracy"], ascending=True))
+    print(df.sort_values(by=["test accuracy"], ascending=True))
 
   # accumulate loss of batch into entire epoch loss
   def track_test_loss(self,loss):

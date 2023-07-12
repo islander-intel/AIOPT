@@ -105,7 +105,7 @@ class ModelBuilder():
     # self.percent_count+=1
     # display(df)
     # print((self.percent_count/len(self.run_data)))
-    print(df.sort_values(by=["train accuracy","test accuracy"], ascending=True))
+    print(df)
 
   # accumulate loss of batch into entire epoch loss
   def track_test_loss(self,loss):
@@ -133,7 +133,7 @@ class ModelBuilder():
     data = pd.DataFrame.from_dict(
         self.run_data, 
         orient = 'columns',
-    ).sort_values(by=["train accuracy","test accuracy"], ascending=True).to_csv(f'{fileName}.csv',index=False)
+    ).sort_values(by=["test accuracy"], ascending=True).to_csv(f'{fileName}.csv',index=False)
 
 
     with open(f'{fileName}.json', 'w', encoding='utf-8') as f:
