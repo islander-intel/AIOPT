@@ -17,7 +17,7 @@ sci-kit learn
  
 
 ## pip install
-
+Comming soon but will be the command bellow
 ```bash
 pip install aiopt
 ```

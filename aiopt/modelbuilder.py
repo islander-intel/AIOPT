@@ -133,7 +133,7 @@ class ModelBuilder():
     data = pd.DataFrame.from_dict(
         self.run_data, 
         orient = 'columns',
-    ).sort_values(by=["test accuracy"], ascending=True).to_csv(f'{fileName}.csv',index=False)
+    ).to_csv(f'{fileName}.csv',index=False)
 
 
     with open(f'{fileName}.json', 'w', encoding='utf-8') as f:
