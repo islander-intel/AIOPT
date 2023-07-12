@@ -1,0 +1,13 @@
+README.md
+setup.py
+aiopt/__init__.py
+aiopt/best.py
+aiopt/build.py
+aiopt/clear_terminal.py
+aiopt/master.py
+aiopt/modelbuilder.py
+aiopt/modelcombination.py
+aiopt.egg-info/PKG-INFO
+aiopt.egg-info/SOURCES.txt
+aiopt.egg-info/dependency_links.txt
+aiopt.egg-info/top_level.txt

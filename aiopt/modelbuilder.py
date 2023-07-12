@@ -9,7 +9,7 @@ import pandas as pd
 import json
 from IPython.display import clear_output
 from .clear_terminal import clear
-from .checkingfit import overfitingCheck,underfitingCheck
+# from .checkingfit import overfitingCheck,underfitingCheck
 torch.set_printoptions(linewidth=120)
 torch.set_grad_enabled(True) 
 
