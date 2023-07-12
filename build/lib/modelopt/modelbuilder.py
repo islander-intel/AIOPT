@@ -1,6 +1,7 @@
 from collections  import OrderedDict
 import torch
 from torch.utils.tensorboard import SummaryWriter # TensorBoard support
+
 import torchvision
 # calculate train time, writing train data to files etc.
 import time
@@ -8,6 +9,7 @@ import pandas as pd
 import json
 from IPython.display import clear_output
 from .clear_terminal import clear
+from .checkingfit import overfitingCheck,underfitingCheck
 torch.set_printoptions(linewidth=120)
 torch.set_grad_enabled(True) 
 
@@ -90,6 +92,8 @@ class ModelBuilder():
     results["epoch duration"] = epoch_duration
     results["run duration"] = run_duration
 
+    
+
     # Record hyper-params into 'results'
     for k,v in self.params._asdict().items(): results[k] = v
     self.run_data.append(results)
@@ -101,7 +105,7 @@ class ModelBuilder():
     # self.percent_count+=1
     # display(df)
     # print((self.percent_count/len(self.run_data)))
-    print(df)
+    print(df.sort_values(by=["train accuracy","test accuracy"], ascending=True))
 
   # accumulate loss of batch into entire epoch loss
   def track_test_loss(self,loss):
@@ -121,12 +125,16 @@ class ModelBuilder():
     return preds.argmax(dim=1).eq(labels).sum().item()
   
   # save end results of all runs into csv, json for further analysis
+  
+
+
   def save(self, fileName):
 
-    pd.DataFrame.from_dict(
+    data = pd.DataFrame.from_dict(
         self.run_data, 
         orient = 'columns',
-    ).to_csv(f'{fileName}.csv',index=False)
+    ).sort_values(by=["train accuracy","test accuracy"], ascending=True).to_csv(f'{fileName}.csv',index=False)
+
 
     with open(f'{fileName}.json', 'w', encoding='utf-8') as f:
       json.dump(self.run_data, f, ensure_ascii=False, indent=4)

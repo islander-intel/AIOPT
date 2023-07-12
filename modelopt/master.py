@@ -11,7 +11,7 @@ from .modelbuilder import ModelBuilder
 from .modelcombination import ModelCombination
 # import torch
 #TODO need to add an override aspect to device
-def torch_run(NNmodel,params,test_data,train_data,epochs,device = None):
+def torch_run_classification(NNmodel,params,test_data,train_data,epochs,threshold = 0.8,loss = F.cross_entropy, opt = optim.Adam,best = True,device = None,filename = "results"):
     if device == None:
         device = (
         "cuda"
@@ -37,12 +37,12 @@ def torch_run(NNmodel,params,test_data,train_data,epochs,device = None):
         model = NNmodel()
         model.to(device)
         train_loader = torch.utils.data.DataLoader(train_data, batch_size = run.batch_size)
-        optimizer = optim.Adam(model.parameters(), lr=run.lr)# this part is what I want to be able to opt
+        optimizer = opt(model.parameters(), lr=run.lr)# this part is what I want to be able to opt
         test_loader = torch.utils.data.DataLoader(test_data,batch_size = run.batch_size)
         m.begin_run(run, model, train_loader,test_loader)
         for epoch in range(epochs):
             m.begin_epoch()
-            loss_fn = F.cross_entropy
+            loss_fn = loss
             train(train_loader,model,loss_fn,optimizer,device,m)
             test(test_loader,model,loss_fn,device,m)
             m.end_epoch()
@@ -50,13 +50,13 @@ def torch_run(NNmodel,params,test_data,train_data,epochs,device = None):
         m.end_run()
 
     # when all runs are done, save results to files
-    m.save('results')
+    m.save(filename)
 
 if __name__=="__main__":
     from torchvision import transforms
     from torchvision import datasets
     from lenet import LeNet
-    from master import torch_run
+    # from master import torch_run
     params = {
         "lr" : [.01, .001],
         "batch_size": [64,100, 1000],

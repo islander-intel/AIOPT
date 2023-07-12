@@ -3,7 +3,7 @@ from torchvision import transforms
 from torchvision import datasets
 from lenet import LeNet
 # from AiOpt import master
-from master import torch_run
+from modelopt.master import torch_run
 params = {
     "lr" : [.01, .001],
     "batch_size": [64,100, 1000],

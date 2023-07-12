@@ -1,7 +1,9 @@
 README.md
 setup.py
 modelopt/__init__.py
+modelopt/best.py
 modelopt/build.py
+modelopt/checkingfit.py
 modelopt/clear_terminal.py
 modelopt/master.py
 modelopt/modelbuilder.py
